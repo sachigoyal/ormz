@@ -2,12 +2,38 @@
 import inquirer from "inquirer";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { existsSync } from "fs";
+import { join } from "path";
 
 const execAsync = promisify(exec);
 
+// Function to detect Drizzle config files
+function detectDrizzleConfig(): boolean {
+  const drizzleConfigFiles = [
+    "drizzle.config.ts",
+    "drizzle.config.js", 
+    "drizzle.config.json",
+    "drizzle.config.mjs"
+  ];
+  
+  return drizzleConfigFiles.some(configFile => existsSync(configFile));
+}
+
+// Function to detect Prisma config files
+function detectPrismaConfig(): boolean {
+  const prismaConfigPaths = [
+    join("prisma", "schema.prisma"),
+    "schema.prisma",
+    join("prisma", "schema.prisma.ts"),
+    "schema.prisma.ts"
+  ];
+  
+  return prismaConfigPaths.some(configPath => existsSync(configPath));
+}
+
 async function executeCommand(command: string): Promise<void> {
   try {
-    console.log(`\n🔄 Executing: ${command}`);
+    console.log(`\n Executing: ${command}`);
     const { stdout, stderr } = await execAsync(command);
     
     if (stdout) {
@@ -16,25 +42,33 @@ async function executeCommand(command: string): Promise<void> {
     if (stderr) {
       console.warn(stderr);
     }
-    console.log(`✅ Command completed: ${command}\n`);
+    console.log(`Command completed: ${command}\n`);
   } catch (error: any) {
-    console.error(`❌ Error executing command: ${command}`);
+    console.error(`Error executing command: ${command}`);
     console.error(error.message);
   }
 }
 
 async function main() {
-  // choose ORM
-
-  console.log("Welcome to ORMZ CLI 🚀");
-  const orm = await inquirer.prompt([
-    {
-      type: "list",
-      name: "orm",
-      message: "Select an ORM",
-      choices: ["Prisma", "Drizzle"],
-    },
-  ]);
+  const hasDrizzleConfig = detectDrizzleConfig();
+  const hasPrismaConfig = detectPrismaConfig();
+  
+  let selectedOrm: string;
+  if (hasDrizzleConfig && !hasPrismaConfig) {
+    selectedOrm = "Drizzle";
+  } else if (hasPrismaConfig && !hasDrizzleConfig) {
+    selectedOrm = "Prisma";
+  } else {
+     const orm = await inquirer.prompt([
+      {
+        type: "list",
+        name: "orm",
+        message: "Select an ORM",
+        choices: ["Prisma", "Drizzle"],
+      },
+    ]);
+    selectedOrm = orm.orm;
+  }
 
   // Prisma Menu
   async function prismaMenu() {
@@ -81,7 +115,6 @@ async function main() {
       await executeCommand(command);
     }
 
-    // Handle migrate submenu if selected
     if (action.action.includes("migrate")) {
       const migrateAction = await inquirer.prompt([
         {
@@ -153,15 +186,14 @@ async function main() {
       },
     ]);
 
-    // Execute all selected commands
     for (const command of action.action) {
       await executeCommand(command);
     }
   }
 
-  if (orm.orm.includes("Prisma")) {
+  if (selectedOrm.includes("Prisma")) {
     await prismaMenu();
-  } else if (orm.orm.includes("Drizzle")) {
+  } else if (selectedOrm.includes("Drizzle")) {
     await drizzleMenu();
   }
 }
