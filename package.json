@@ -1,0 +1,23 @@
+{
+  "name": "ormz",
+  "version": "0.0.1",
+  "description": "A CLI for managing your ORM commands",
+  "bin": {
+    "ormz": "./index.ts"
+  },
+  "module": "index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "inquirer": "^12.9.3"
+  }
+}
