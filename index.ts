@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 import inquirer from "inquirer";
 import { exec } from "child_process";
 import { promisify } from "util";
