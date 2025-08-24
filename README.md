@@ -1,15 +1,37 @@
 # ormz
 
-To install dependencies:
+A CLI tool for managing ORM commands with auto-detection and interactive menus for Prisma and Drizzle.
+
+![ormz](./.github/image.png)
+
+## Installation
 
 ```bash
 bun install
 ```
 
-To run:
+## Usage
 
 ```bash
 bun run index.ts
 ```
 
-This project was created using `bun init` in bun v1.2.10. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+The tool automatically detects your ORM configuration and provides interactive menus for common commands.
+
+## Supported ORMs
+
+**Prisma**: push, generate, pull, validate, format, studio, migrate commands
+
+**Drizzle**: generate, migrate, push, pull, studio
+
+## Auto-Detection
+
+- Detects `drizzle.config.*` files for Drizzle
+- Detects `schema.prisma` files for Prisma  
+- Prompts for selection if both/neither found
+
+## License
+
+MIT
+
+Built with [Bun](https://bun.sh)
