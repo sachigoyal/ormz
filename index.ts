@@ -110,6 +110,11 @@ async function main() {
       },
     ]);
 
+    if (action.action.length === 0) {
+      console.log("No action selected");
+      return;
+    }
+
     const nonMigrateCommands = action.action.filter((cmd: string) => cmd !== "migrate");
     for (const command of nonMigrateCommands) {
       await executeCommand(command);
@@ -186,6 +191,11 @@ async function main() {
       },
     ]);
 
+    if (action.action.length === 0) {
+      console.log("No action selected");
+      return;
+    }
+
     for (const command of action.action) {
       await executeCommand(command);
     }
@@ -198,4 +208,7 @@ async function main() {
   }
 }
 
-main();
+main().catch(error => {
+    console.log("\n Goodbye! 👋");
+    process.exit(1);
+});
