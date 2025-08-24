@@ -1,6 +1,6 @@
 {
   "name": "ormz",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A CLI for managing your ORM commands",
   "bin": {
     "ormz": "./dist/index.js"
@@ -26,5 +26,8 @@
   },
   "dependencies": {
     "inquirer": "^12.9.3"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
