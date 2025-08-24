@@ -1,13 +1,14 @@
 {
   "name": "ormz",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A CLI for managing your ORM commands",
   "bin": {
-    "ormz": "./index.ts"
+    "ormz": "./dist/index.js"
   },
   "module": "index.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "bun build index.ts --outdir ./dist --target node",
+    "publish": "bun run build && bun publish --access public"
   },
   "type": "module",
   "author": "Sachi Goyal",
