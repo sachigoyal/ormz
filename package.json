@@ -10,7 +10,14 @@
     "build": "tsc"
   },
   "type": "module",
-  "private": true,
+  "author": "Sachi Goyal",
+  "keywords": ["orm", "prisma", "drizzle", "cli", "ormz"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sachigoyal/ormz"
+  },
+  "homepage": "https://github.com/sachigoyal/ormz",
+  "license": "MIT",
   "devDependencies": {
     "@types/bun": "latest"
   },
